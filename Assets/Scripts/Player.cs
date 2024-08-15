@@ -63,7 +63,7 @@ public class Player2 : MonoBehaviour
             
         }
         
-
+            
         //Pular
         if(Input.GetKeyDown(KeyCode.Space) && !isJumping)
         {
