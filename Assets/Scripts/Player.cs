@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Serialization;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
 public class Player2 : MonoBehaviour
@@ -19,9 +23,9 @@ public class Player2 : MonoBehaviour
     private SpriteRenderer sprite;
     public bool isJumping = false;
     public Light2D LuzPlayer;
-
-
-    
+    public bool impulso;
+    public GameObject fim;
+    public AudioSource audioFundo;
     
     // Start is called before the first frame update
     void Start()
@@ -30,6 +34,7 @@ public class Player2 : MonoBehaviour
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         LuzPlayer.intensity = 0;
+
     }
 
     private void FixedUpdate() 
@@ -47,7 +52,6 @@ public class Player2 : MonoBehaviour
         {
             sprite.flipX = false;
             anim.SetLayerWeight(1,1);
-            
         }
         
         if(Input.GetKey(KeyCode.A) && moveH < 0)
@@ -59,11 +63,8 @@ public class Player2 : MonoBehaviour
         if(moveH == 0)
         {
             anim.SetLayerWeight(1,0);
-            anim.SetLayerWeight(0,1);
-            
+            anim.SetLayerWeight(0,1);   
         }
-        
-            
         //Pular
         if(Input.GetKeyDown(KeyCode.Space) && !isJumping)
         {
@@ -77,7 +78,12 @@ public class Player2 : MonoBehaviour
             anim.SetLayerWeight(2,0);
             anim.SetLayerWeight(0,1);
         }
-        
+        // Atirar
+        if(Input.GetMouseButtonDown(0)&& !impulso){
+            rb.AddForce(transform.up * forcaPulo,ForceMode2D.Impulse);
+            impulso= true;
+
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D other) 
@@ -85,18 +91,32 @@ public class Player2 : MonoBehaviour
         if(other.gameObject.CompareTag("Chao"))
         {
             isJumping = false;
+            impulso = false;
         }
-        
+         if(other.gameObject.CompareTag("Fim")){
+            StartCoroutine(QuitGame());
+            Time.timeScale = 1;
+            fim.SetActive(true);
+            audioFundo.mute =true;
+        }
     }
-
     private void OnTriggerEnter2D(Collider2D other) 
     {
         if(other.gameObject.CompareTag("Void")){
-            Destroy(this.gameObject);
+             this.gameObject.SetActive(false);
+             Time.timeScale = 0;
         }
         if(other.gameObject.CompareTag("Fruit")){
             Destroy(other.gameObject);
             LuzPlayer.intensity = 1;
+        }
+    }
+    IEnumerator QuitGame(){
+        while (true)
+        {
+            yield return new WaitForSeconds(10);
+            print("Quitado");
+            Application.Quit();
         }
     }
 }
