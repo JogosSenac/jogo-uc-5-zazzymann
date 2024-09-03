@@ -19,23 +19,22 @@ public class CameraSegue : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        player = GameObject.FindWithTag("Player");
         if(player != null)
         {
             pX = player.transform.position.x;
             pY = player.transform.position.y;
         }
         
-        if(pX > -10 || pY < -1 )
+        if(pX > -10 || pY < 3 )
         {
             transform.position = new Vector3(pX, player.transform.position.y, -1);
         }
-
+        // não faz sentido mas funciona!
         if(player == null)
         {
             player = GameObject.FindWithTag("Player");
             transform.position = posInicial;
-        }else{
-            player = GameObject.FindWithTag("Player");
         }
     }
 }

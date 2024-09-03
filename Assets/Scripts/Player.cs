@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ public class Player2 : MonoBehaviour
     public bool impulso;
     public GameObject fim;
     public AudioSource audioFundo;
-    
+    public GameObject telaRespawn;
     // Start is called before the first frame update
     void Start()
     {
@@ -48,13 +49,13 @@ public class Player2 : MonoBehaviour
     void Update()
     {
         //Animação Andar
-        if(Input.GetKey(KeyCode.D) && moveH > 0)
+        if(moveH >= 0)
         {
             sprite.flipX = false;
             anim.SetLayerWeight(1,1);
         }
         
-        if(Input.GetKey(KeyCode.A) && moveH < 0)
+        if(moveH <= 0)
         {
             sprite.flipX = true;
             anim.SetLayerWeight(1,1);
@@ -103,8 +104,8 @@ public class Player2 : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other) 
     {
         if(other.gameObject.CompareTag("Void")){
-             this.gameObject.SetActive(false);
-             Time.timeScale = 0;
+             telaRespawn.SetActive(true);
+             Destroy(this.gameObject);
         }
         if(other.gameObject.CompareTag("Fruit")){
             Destroy(other.gameObject);

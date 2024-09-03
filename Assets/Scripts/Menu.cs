@@ -10,6 +10,9 @@ public class Menu : MonoBehaviour
     public AudioSource audioS;
     public GameObject settings;
     public Slider volume;
+    public GameObject tutorial;
+    public GameObject playerPrefab;
+    public GameObject telaRespawn;
     // Start is called before the first frame update
     void Start()
     {
@@ -42,5 +45,16 @@ public class Menu : MonoBehaviour
         audioS.Play();
         PlayerPrefs.SetFloat("Volume", volume.value);
         settings.SetActive(false);
+    }
+    public void sairTutorial(){
+        audioS.Play();
+        tutorial.SetActive(false);
+    }
+    public void GerarPlayer(){
+        telaRespawn.SetActive(false); 
+        Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+    }
+    public void MenuMorte(){
+        telaRespawn.SetActive(true);
     }
 }
