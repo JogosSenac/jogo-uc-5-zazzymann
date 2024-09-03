@@ -193,6 +193,7 @@ MonoBehaviour:
   impulso: 0
   fim: {fileID: 0}
   audioFundo: {fileID: 0}
+  telaRespawn: {fileID: 0}
 --- !u!1 &3050724325461827685
 GameObject:
   m_ObjectHideFlags: 0
